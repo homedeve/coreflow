@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 use Homedeve\Coreflow\Commands\InstallCommand;
 use Homedeve\Coreflow\Commands\MakeEntityCommand;
+use Homedeve\Coreflow\Commands\MakeRepositoryCommand;
 
 class CoreflowServiceProvider extends ServiceProvider
 {
@@ -16,6 +17,7 @@ class CoreflowServiceProvider extends ServiceProvider
             $this->commands([
                 InstallCommand::class,
                 MakeEntityCommand::class,
+                MakeRepositoryCommand::class,
                 // D'autres commandes seront ajoutées ici
             ]);
         }
