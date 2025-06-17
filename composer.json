@@ -1,0 +1,32 @@
+{
+  "name": "homedeve/coreflow",
+  "description": "Laravel Clean Architecture & DDD Toolkit by Homedeve",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Camel Djoulako",
+      "email": "contact@homedeve.com",
+      "homepage": "https://homedeve.com",
+      "role": "Lead Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.1",
+    "illuminate/support": "^10.0|^11.0|^12.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Homedeve\\Coreflow\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Homedeve\\Coreflow\\CoreflowServiceProvider"
+      ]
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
