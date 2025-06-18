@@ -8,32 +8,33 @@ use Illuminate\Support\Str;
 
 class MakeRepositoryCommand extends Command
 {
-    protected $signature = 'coreflow:make:repository {name : Nom de la ressource}';
-    protected $description = 'Crée une interface Repository métier et son implémentation Eloquent';
+    protected $signature = 'coreflow:make:repository {context : Nom du contexte métier (ex: User)}';
+    protected $description = 'Crée un Repository dans un contexte DDD : interface + implémentation Eloquent.';
 
     public function handle(): int
     {
-        $name = trim($this->argument('name'));
-        $className = Str::studly($name);
-        $interfaceName = "{$className}RepositoryInterface";
-        $implClassName = "Eloquent{$className}Repository";
+        $context = Str::studly(trim($this->argument('context')));
+        $interfaceName = "{$context}RepositoryInterface";
+        $implName = "Eloquent{$context}Repository";
 
-        $domainNamespace = 'App\\Core\\Domain\\Repositories';
-        $infraNamespace = 'App\\Infrastructure\\Persistence\\Eloquent';
+        // Noms de namespace
+        $domainNamespace = "Domain\\{$context}\\Repositories";
+        $infraNamespace = "Infrastructure\\Persistence\\{$context}";
 
-        $domainDir = base_path('core/Domain/Repositories');
-        $infraDir = base_path('infrastructure/Persistence/Eloquent');
+        // Répertoires
+        $interfaceDir = base_path("src/Domain/{$context}/Repositories");
+        $implDir = base_path("src/Infrastructure/Persistence/{$context}");
 
-        if (!File::exists($domainDir)) {
-            File::makeDirectory($domainDir, 0755, true);
+        if (!File::exists($interfaceDir)) {
+            File::makeDirectory($interfaceDir, 0755, true);
         }
 
-        if (!File::exists($infraDir)) {
-            File::makeDirectory($infraDir, 0755, true);
+        if (!File::exists($implDir)) {
+            File::makeDirectory($implDir, 0755, true);
         }
 
-        $interfacePath = "$domainDir/{$interfaceName}.php";
-        $implPath = "$infraDir/{$implClassName}.php";
+        $interfacePath = "$interfaceDir/{$interfaceName}.php";
+        $implPath = "$implDir/{$implName}.php";
 
         if (File::exists($interfacePath)) {
             $this->error("❌ L'interface {$interfaceName} existe déjà.");
@@ -41,11 +42,11 @@ class MakeRepositoryCommand extends Command
         }
 
         if (File::exists($implPath)) {
-            $this->error("❌ L'implémentation {$implClassName} existe déjà.");
+            $this->error("❌ L'implémentation {$implName} existe déjà.");
             return Command::FAILURE;
         }
 
-        // Créer l’interface
+        // Générer interface
         File::put($interfacePath, <<<PHP
 <?php
 
@@ -57,7 +58,7 @@ interface $interfaceName
 }
 PHP);
 
-        // Créer l’implémentation
+        // Générer implémentation
         File::put($implPath, <<<PHP
 <?php
 
@@ -65,7 +66,7 @@ namespace $infraNamespace;
 
 use $domainNamespace\\$interfaceName;
 
-class $implClassName implements $interfaceName
+class $implName implements $interfaceName
 {
     // Implémentez ici les méthodes de l’interface
 }

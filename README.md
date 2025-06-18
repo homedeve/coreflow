@@ -19,11 +19,12 @@
 
 ```text
 project-root/
-├── core/
+├── src/
 │   ├── Domain/
-│   │   ├── Entities/
-│   │   ├── Repositories/
-│   │   └── ValueObjects/
+    │   ├── Domain1/
+                  ├── Entities/
+                  ├── Repositories/
+                  └── ValueObjects/
 │   ├── Application/
 │   │   ├── DTOs/
 │   │   ├── UseCases/
@@ -31,16 +32,12 @@ project-root/
 │   └── Shared/
 │       ├── Exceptions/
 │       └── Interfaces/
-├── infrastructure/
-│   ├── Persistence/
-│   ├── Pdf/
-│   └── Notifications/
-├── app/
-│   ├── Http/Controllers
-│   └── Providers/CoreflowServiceProvider.php
-└── tests/
-    ├── Unit/
-    └── Feature/
+    ├── infrastructure/
+    │   ├── Persistence/
+    │   ├── Pdf/
+    │   └── Notifications/
+    ├── app/
+    │   └── Providers/CoreflowServiceProvider.php
 ```
 
 ---

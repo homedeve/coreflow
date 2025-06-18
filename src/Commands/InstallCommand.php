@@ -8,25 +8,19 @@ use Illuminate\Support\Facades\File;
 class InstallCommand extends Command
 {
     protected $signature = 'coreflow:install';
-    protected $description = 'Génère la structure DDD + Clean Architecture dans un projet Laravel.';
+    protected $description = 'Génère la structure DDD + Clean Architecture dans un projet Laravel (sans Bounded Contexts prématurés).';
 
     public function handle(): int
     {
-        $this->info('🛠 Création de la structure Clean Architecture...');
+        $this->info('🛠 Initialisation de la structure Clean Architecture...');
 
+        // Racine métier
         $directories = [
-            'core/Domain/Entities',
-            'core/Domain/Repositories',
-            'core/Domain/ValueObjects',
-            'core/Application/DTOs',
-            'core/Application/UseCases',
-            'core/Application/Services',
-            'core/Shared/Interfaces',
-            'core/Shared/Exceptions',
-            'infrastructure/Persistence/Eloquent',
-            'infrastructure/Notifications',
-            'infrastructure/Pdf',
-            'infrastructure/Services'
+            'src/Domain',              // Bounded Contexts (User, Product, etc.)
+            'src/Application',         // UseCases, Services, etc. spécifiques à un domaine
+            'src/Infrastructure',      // Couche d’accès externe (Persistance, Mail, PDF, etc.)
+            'src/Shared/Interfaces',   // Interfaces transversales, ex : Logger, EventDispatcher
+            'src/Shared/Exceptions'    // Exceptions génériques métier
         ];
 
         foreach ($directories as $dir) {
@@ -39,7 +33,7 @@ class InstallCommand extends Command
             }
         }
 
-        $this->info('✅ Structure générée avec succès !');
+        $this->info('✅ Structure DDD + Clean Architecture initialisée avec succès.');
         return Command::SUCCESS;
     }
 }
